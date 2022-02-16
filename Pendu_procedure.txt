@@ -1,0 +1,129 @@
+CONST TAILLECHAINE=255
+
+PROCEDURE Longueur_mot(*n:ENTIER,mot:CHAINE):ENTIER
+//La procedure Longueur_mot permet de stocker la longueur du mot entrer par l'utilisateur
+DEBUT
+	n*=longueur(mot)
+FIN
+
+PROCEDURE Votre_mot(mot,s_mot:CHAINE):CHAINE
+//La procedure Votre_mot demande a l'utilisateur d'entrer un mot puis verifie si se mot et compatible
+avec la limite TAILLECHIANE puis enfin on copie le mot dan une autre chaine
+DEBUT
+int n_i,n_j
+
+n_j=0
+FAIRE
+	ECRIRE("Veuillez saisir un mot")
+	LIRE mot
+TANQUE longueur(mot)>TAILLECHAINE-1
+	Longueur_mot(&n_i,mot)
+POUR n_j< n_i FAIRE PAS DE 1
+FAIRE
+	s_mot[n_j]<-mot[n_j]
+FINPOUR
+FINTANQUE
+
+
+PROCEDURE Affiche_pendu(n_vie:ENTIER)CHAINE
+//La procedure permet d'afficher le pendu en fonction du nombre de vie
+DEBUT
+CAS n_vie PARMI:
+			CAS 10  ECRIRE(" ")
+			CAS 9	ECRIRE("_|__")
+			CAS 8	ECRIRE(" ""|")
+				ECRIRE(" ""|")
+				ECRIRE(" ""|")	
+				ECRIRE(" ""|")	
+				ECRIRE("_|__")
+			...
+			...
+			...
+			...
+			...
+			...
+			... 
+			CAS 0	ECRIRE("___________")
+				ECRIRE(" ""|     |")
+				ECRIRE(" ""|     O")
+				ECRIRE(" ""|    /|\")
+				ECRIRE(" ""|    / \")
+				ECRIRE("_|__)
+FINCASPARMI
+FIN
+PROCEDURE Lire_lettre(*n_k:ENTIER,mot,s_mot:CHAINE)CHAINE
+//La procedure demande une lettre a l'utilisateur puis vérifie si cette lettre était dans le mot
+pour incrémenter une variable
+DEBUT
+int n_j,n_i;
+n_j=0
+
+char c_lettre='';
+
+longueur_mot(&n_i,mot)
+
+ECRIRE("Veuillez saisir une lettre")
+LIRE c_lettre
+*n_k=0
+POUR n_j<n_i FAIRE PAS DE 1
+FAIRE
+	SI (c_lettre== s_mot[n_j])
+		s_mot[n_j]='0'
+		*n_k=1
+	FINSI
+FINPOUR
+FIN
+
+PROCEDURE Ecrire_le_mot(mot,s_mot:CHAINE)CHAINE
+//La procedure vérifie si la lettre entrer correspond a une lettre du mot si oui affiche la lettre
+sinon affiche '_ ' enfin si la variable n_k<=0, la procedure ecrit un message de victoire
+DEBUT
+ENTIER n_k,n_i,n_j
+CARACTERE c_lettre
+n_j=0
+Longueur_mot (&n_i,mot)
+n_k=0,
+POUR n_j<n_i FAIRE PAS DE 1
+	c_lettre = s_mot[n_j]
+		SI (c_lettre == '0')
+			ECRIRE s_mot[n_j]
+		SINON
+			ECRIRE "_ "
+			n_k++
+		FINSI
+SI n_k<=0
+	ECRIRE("Bravo vous avez trouver le mot")
+FINSI
+FINPOUR
+FIN
+
+PROCEDURE Compteur_de_vie (ENTIER:n_k,*n_i,Statut_jeu):ENTIER
+//La procedure Compteur_de_vie permet de savoir le nombre de vie restant du joueur
+ainsi que le statut du jeu pour arreter le programme si les vie tombe a 0
+DEBUT
+SI n_k==0
+	*n_vie=*n_vie-1;
+	SI (*n_vie ==0)
+		*Statut_jeu=1
+	FINSI
+FINSI
+FIN
+
+MAIN PENDU
+DEBUT
+ENTIER:Statut_jeu=0,n_vie=10,n_k=0
+CARACTERE c_lettre
+CHAINE mot[TAILLECHAINE],s_mot[TAILLECHAINE]
+
+Votre_mot(mot,s_mot)
+TANTQUE(Statut_jeu ==0)
+	Affiche_pendu(n_vie)
+
+	Ecrire_le_mot(mot,s_mot)
+
+	Lire_lettre(&n_k,mot,s_mot)
+
+	Compteur_de_vie(n_k, &n_vie, &Statut_jeu)
+FINPOUR
+ECRIRE("Vous avez perdu le mot était"+mot)
+FIN
